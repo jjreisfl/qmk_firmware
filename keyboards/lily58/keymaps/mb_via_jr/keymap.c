@@ -32,6 +32,12 @@ enum layer_number {
 #define KC_I_UNDO LGUI(KC_Z)
 #define KC_I_REDO LSG(KC_Z)
 
+#define RGB_QWERTY 0xFF, 0x00, 0x00 // Red
+#define RGB_NUMBER 0x00, 0xFF, 0x00 // Green
+#define RGB_SYMBOL 0x00, 0x00, 0xFF // Blue
+#define RGB_NAV    0xFF, 0xFF, 0x00 // Yellow
+#define RGB_MOUSE  0x00, 0xFF, 0xFF // Cyan
+#define RGB_RGB    0xFF, 0x00, 0xFF // Magenta
 
 const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
 
@@ -172,4 +178,29 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
   )
 };
 
-
+layer_state_t layer_state_set_user(layer_state_t state) {
+    switch (get_highest_layer(state)) {
+        case _QWERTY:
+            rgblight_setrgb(RGB_QWERTY);
+            break;
+        case _NUMBER:
+            rgblight_setrgb(RGB_NUMBER);
+            break;
+        case _SYMBOL:
+            rgblight_setrgb(RGB_SYMBOL);
+            break;
+        case _NAV:
+            rgblight_setrgb(RGB_NAV);
+            break;
+        case _MOUSE:
+            rgblight_setrgb(RGB_MOUSE);
+            break;
+        case _RGB:
+            rgblight_setrgb(RGB_RGB);
+            break;
+        default:
+            rgblight_setrgb(0x00, 0x00, 0x00); // Default to off
+            break;
+    }
+    return state;
+}
